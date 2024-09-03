@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 
 class ClientsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $clients = Client::all();
+        $clients = $request->user()->clients;
 
         foreach ($clients as $client) {
             $client->append('bookings_count');
@@ -24,12 +24,11 @@ class ClientsController extends Controller
         return view('clients.create');
     }
 
-    public function show($client)
+    public function show(Client $client)
     {
-        $client = Client::query()
-            ->with('bookings')
-            ->where('id', $client)
-            ->first();
+        $this->authorize('view', $client);
+
+        $client->load('bookings');
 
         return view('clients.show', [
             'client' => ClientResource::make($client)
@@ -50,10 +49,12 @@ class ClientsController extends Controller
         return $client;
     }
 
-    public function destroy($client)
+    public function destroy(Client $client)
     {
-        Client::where('id', $client)->delete();
+        $this->authorize('delete', $client);
 
-        return 'Deleted';
+        $client->delete();
+
+        return redirect()->back()->with('message', 'Client deleted.');
     }
 }
