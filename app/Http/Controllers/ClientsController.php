@@ -52,6 +52,6 @@ class ClientsController extends Controller
 
         $client->delete();
 
-        return response()->json(['message' => 'Client deleted']);
+        return response()->json(['message' => 'Client deleted'], 204);
     }
 }
