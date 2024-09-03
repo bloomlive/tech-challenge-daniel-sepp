@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Resources\ClientResource;
 use Illuminate\Http\Request;
 
 class ClientsController extends Controller
@@ -30,7 +31,9 @@ class ClientsController extends Controller
             ->where('id', $client)
             ->first();
 
-        return view('clients.show', ['client' => $client]);
+        return view('clients.show', [
+            'client' => ClientResource::make($client)
+        ]);
     }
 
     public function store(Request $request)
