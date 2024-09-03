@@ -11,11 +11,10 @@ class ClientsController extends Controller
 {
     public function index(Request $request)
     {
-        $clients = $request->user()->clients;
-
-        foreach ($clients as $client) {
-            $client->append('bookings_count');
-        }
+        $clients = $request->user()->clients()
+            ->with('bookings')
+            ->withCount('bookings')
+            ->get();
 
         return view('clients.index', ['clients' => $clients]);
     }

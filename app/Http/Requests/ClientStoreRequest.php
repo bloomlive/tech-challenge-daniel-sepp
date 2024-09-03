@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\RequiredIf;
 
 class ClientStoreRequest extends FormRequest
 {
-    public function rules()
+    public function rules(): array
     {
         return [
             'name' => ['required', 'max:190'],
-            'email' => ['nullable', 'email:dns', 'max:254',  Rule::requiredIf(empty($this->phone))],
+            'email' => ['nullable', 'email:dns', 'max:254', Rule::requiredIf(empty($this->phone))],
             'phone' => ['nullable', 'regex:/^[0-9+\s]*$/', Rule::requiredIf(empty($this->email))],
             'address' => ['nullable'],
             'city' => ['nullable'],
@@ -20,7 +19,7 @@ class ClientStoreRequest extends FormRequest
         ];
     }
 
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }

@@ -2,9 +2,10 @@
 
 namespace App\Http\Resources;
 
+use App\Client;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Client */
+/** @mixin Client */
 class ClientResource extends JsonResource
 {
     public function toArray($request)
