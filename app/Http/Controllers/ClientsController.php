@@ -29,7 +29,11 @@ class ClientsController extends Controller
     {
         $this->authorize('view', $client);
 
-        $client->load('bookings');
+        $client->load([
+            'bookings' => function ($query) {
+                return $query->orderByDesc('id');
+            }
+        ]);
 
         return view('clients.show', [
             'client' => ClientResource::make($client)
