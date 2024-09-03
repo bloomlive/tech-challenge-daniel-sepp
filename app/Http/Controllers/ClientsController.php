@@ -12,7 +12,6 @@ class ClientsController extends Controller
     public function index(Request $request)
     {
         $clients = $request->user()->clients()
-            ->with('bookings')
             ->withCount('bookings')
             ->get();
 
