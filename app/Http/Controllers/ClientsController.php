@@ -55,6 +55,6 @@ class ClientsController extends Controller
 
         $client->delete();
 
-        return redirect()->back()->with('message', 'Client deleted.');
+        return response()->json(['message' => 'Client deleted']);
     }
 }

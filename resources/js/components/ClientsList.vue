@@ -7,25 +7,25 @@
 
         <table class="table">
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Number of Bookings</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Number of Bookings</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
-                <tr v-for="client in clients" :key="client.id">
-                    <td>{{ client.name }}</td>
-                    <td>{{ client.email }}</td>
-                    <td>{{ client.phone }}</td>
-                    <td>{{ client.bookings_count }}</td>
-                    <td>
-                        <a class="btn btn-primary btn-sm" :href="`/clients/${client.id}`">View</a>
-                        <button class="btn btn-danger btn-sm" @click="deleteClient(client)">Delete</button>
-                    </td>
-                </tr>
+            <tr v-for="client in clients" :key="client.id">
+                <td>{{ client.name }}</td>
+                <td>{{ client.email }}</td>
+                <td>{{ client.phone }}</td>
+                <td>{{ client.bookings_count }}</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" :href="`/clients/${client.id}`">View</a>
+                    <button class="btn btn-danger btn-sm" @click="deleteClient(client)">Delete</button>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
@@ -40,8 +40,13 @@ export default {
     props: ['clients'],
 
     methods: {
-        deleteClient(client) {
-            axios.delete(`/clients/${client.id}`);
+        deleteClient(deletableClient) {
+            axios.delete(`/clients/${deletableClient.id}`).then(resp => {
+                if (resp.status === 204) {
+                    this.clients = this.clients.filter(client => client.id !== deletableClient.id);
+                }
+            })
+
         }
     }
 }
