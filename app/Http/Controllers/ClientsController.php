@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Http\Requests\ClientStoreRequest;
 use App\Http\Resources\ClientResource;
 use Illuminate\Http\Request;
 
@@ -35,18 +36,11 @@ class ClientsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(ClientStoreRequest $request)
     {
-        $client = new Client;
-        $client->name = $request->get('name');
-        $client->email = $request->get('email');
-        $client->phone = $request->get('phone');
-        $client->adress = $request->get('adress');
-        $client->city = $request->get('city');
-        $client->postcode = $request->get('postcode');
-        $client->save();
+        $validated = $request->validated();
 
-        return $client;
+        return $request->user()->clients()->create($validated);
     }
 
     public function destroy(Client $client)
